@@ -5,18 +5,49 @@
 }
 
 :root {
-    --background-color: rgb(27, 27, 27)
+    --background-color: rgb(27, 27, 27);
+    --title: Verdana, Geneva, Tahoma, sans-serif
+    /* --footer:  */
 }
 
 body {
     min-height: 100vh;
+    font-family: var(--title);
     background-color: var(--background-color);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-canvas{
-    border: 0.2em solid white;
-    border-radius: 1em;
+canvas {
+    border: 0.2dvw solid white;
+    border-radius: 1dvw;
+    width: 70dvw;
+    height: 70dvh;
+    padding: 0.2m
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+}
+
+h1 {
+    color: white;
+
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--background-color);
+    color: white;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: smaller
 }
