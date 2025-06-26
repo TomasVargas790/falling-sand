@@ -5,6 +5,16 @@ const isWithinCanvas = (evt) => (evt.offsetX < canvas.width && evt.offsetX >= 0)
 
 export const canvas = document.getElementById('canvas');
 
+const colorInput = document.getElementById('color');
+const brushInput = document.getElementById('brush');
+const gravityInput = document.getElementById('gravity');
+
+const buttons = document.querySelectorAll('button');
+
+let color = undefined
+let brush = 1
+let gravity = 1
+
 canvas.width = canvas.clientWidth;
 canvas.height = canvas.clientHeight;
 
@@ -29,13 +39,13 @@ canvas.addEventListener('click', (evt) => {
     const row = Math.floor(evt.offsetY / CELL);
 
     if (isWithinCanvas(evt) && state[row][col] === 0) {
-        state[row][col] = randomColor()
+        state[row][col] = color ?? randomColor()
     }
 });
 
 canvas.addEventListener('mousedown', (event) => {
     if (event.button === MAIN_MOUSE_BUTTON) {
-        actualColor = randomColor()
+        actualColor = color ?? randomColor()
         isDrawing = true;
     }
 });
@@ -49,19 +59,73 @@ canvas.addEventListener('mouseup', (event) => {
 canvas.addEventListener('mousemove', (evt) => {
     const col = Math.floor(evt.offsetX / CELL);
     const row = Math.floor(evt.offsetY / CELL);
-    if (isDrawing && isWithinCanvas(evt) && state[row][col] === 0)
+
+    if (!isWithinCanvas(evt)) {
+        isDrawing = false
+    }
+
+    if (isDrawing && state[row][col] === 0) {
         state[row][col] = actualColor
+
+
+        let i = 1
+        while (i < brush) {
+            const newRowIndex = row + (Math.random() > 0.5 ? -1 : 1 * i)
+            const newColIndex = col + (Math.random() > 0.5 ? -1 : 1 * i)
+
+            if (newRowIndex < state.length && newColIndex < state[row].length && state[newRowIndex][newColIndex] === 0) {
+                state[newRowIndex][newColIndex] = actualColor
+            }
+            i++
+        }
+    }
+
 });
+
+colorInput.addEventListener('change', ({ target: { value } }) => color = value)
+brushInput.addEventListener('change', ({ target: { value } }) => brush = Number(value))
+gravityInput.addEventListener('change', ({ target: { value } }) => gravity = Number(value))
+
+buttons.forEach(b => {
+    const { dataset: { type, input } } = b
+    console.log(b.dataset.type)
+    b.addEventListener('click', () => {
+        handleButtons(type, input)
+    })
+})
+
+
+function handleButtons(type, inputName) {
+    const el = document.getElementById(inputName);
+    const step = inputName === "gravity" ? 0.25 : 1;
+
+    let value = Number(el.value);
+    const min = Number(el.min);
+    const max = Number(el.max);
+
+    value += type === "add" ? step : -step;
+
+    value = Math.max(min, Math.min(max, value));
+
+    el.value = value;
+
+    if (inputName === "gravity") {
+        gravity = value;
+    } else {
+        brush = value;
+    }
+}
 
 function refresh() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     drawCells(state);
-    state = getNewState(state)
+    state = getNewState(state, gravity)
     setTimeout(() => {
         requestAnimationFrame(refresh);
-    }, 1000 / FPS);
+    }, 1000 / Math.abs((FPS * gravity)));
 }
+
 
 refresh();
 

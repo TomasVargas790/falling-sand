@@ -12,9 +12,31 @@
 <body>
     <main>
         <h1>Falling Sand</h1>
-        <canvas id="canvas">
-
-        </canvas>
+        <section>
+            <aside>
+                <div class="input-container">
+                    <label for="brush">Pincel</label>
+                    <div class="input-container-buttons">
+                        <button data-type="minus" data-input="brush">-</button>
+                        <input type="number" name="brush" id="brush" max="4" min="1" value="1">
+                        <button data-type="add" data-input="brush">+</button>
+                    </div>
+                </div>
+                <div class="input-container">
+                    <label for="color">Color</label>
+                    <input type="color" name="color" id="color">
+                </div>
+                <div class="input-container">
+                    <label for="gravity">Gravedad</label>
+                    <div class="input-container-buttons">
+                        <button data-type="minus" data-input="gravity">-</button>
+                        <input type="number" max="2" min="-2" step=".25" name="gravity" id="gravity" value="1">
+                        <button data-type="add" data-input="gravity">+</button>
+                    </div>
+                </div>
+            </aside>
+            <canvas id="canvas"></canvas>
+        </section>
     </main>
     <footer>
         <p>Tomas Vargas 2025</p>

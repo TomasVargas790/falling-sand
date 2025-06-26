@@ -38,8 +38,12 @@ export function drawCells(state) {
     }
 }
 
-export function getNewState(state) {
+export function getNewState(state, gravity) {
+    if (gravity === 0) return  [...state ]
+
     const newState = Array.from({ length: state.length }, () => Array(state[0].length).fill(0));
+
+    const gravityDirection = (gravity / Math.abs(gravity))
 
     for (let r = 0; r < state.length; r++) {
         for (let c = 0; c < state[r].length; c++) {
@@ -47,12 +51,15 @@ export function getNewState(state) {
 
             if (actual === 0) continue
 
-            if (r === ROWS - 1) {
+            if ((r === ROWS - 1 && gravityDirection === 1) || (r === 0 && gravityDirection === -1)) {
                 newState[r][c] = actual;
                 continue;
             }
 
-            const below = state[r + 1][c]
+
+            const next = r + (1 * gravityDirection)
+
+            const below = state[next][c]
 
             let direction = 1
             if (Math.random() < 0.5) {
@@ -63,18 +70,18 @@ export function getNewState(state) {
             let belowB = -1;
 
             if (withinCols(c + direction)) {
-                belowA = state[r + 1][c + direction]
+                belowA = state[next][c + direction]
             }
             if (withinCols(c - direction)) {
-                belowB = state[r + 1][c - direction]
+                belowB = state[next][c - direction]
             }
 
             if (below === 0) {
-                newState[r + 1][c] = actual
+                newState[next][c] = actual
             } else if (belowA === 0) {
-                newState[r + 1][c + direction] = actual
+                newState[next][c + direction] = actual
             } else if (belowB === 0) {
-                newState[r + 1][c - direction] = actual
+                newState[next][c - direction] = actual
             } else {
                 newState[r][c] = actual
             }
