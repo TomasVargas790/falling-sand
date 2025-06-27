@@ -1,4 +1,4 @@
-import { CELL } from "./config.js";
+import { CELL } from "./index.js";
 import { COLS, ctx, ROWS } from "./index.js";
 
 export const withinCols = (c) => c >= 0 && c < COLS

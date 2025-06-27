@@ -1,46 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Falling Sand</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="index.js" type="module" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Falling Sand</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="index.js" defer></script>
 </head>
 
 <body>
-    <main>
-        <h1>Falling Sand</h1>
-        <section>
-            <aside>
-                <div class="input-container">
-                    <label for="brush">Pincel</label>
-                    <div class="input-container-buttons">
-                        <button data-type="minus" data-input="brush">-</button>
-                        <input type="number" name="brush" id="brush" max="4" min="1" value="1">
-                        <button data-type="add" data-input="brush">+</button>
-                    </div>
-                </div>
-                <div class="input-container">
-                    <label for="color">Color</label>
-                    <input type="color" name="color" id="color">
-                </div>
-                <div class="input-container">
-                    <label for="gravity">Gravedad</label>
-                    <div class="input-container-buttons">
-                        <button data-type="minus" data-input="gravity">-</button>
-                        <input type="number" max="2" min="-2" step=".25" name="gravity" id="gravity" value="1">
-                        <button data-type="add" data-input="gravity">+</button>
-                    </div>
-                </div>
-            </aside>
-            <canvas id="canvas"></canvas>
-        </section>
-    </main>
-    <footer>
-        <p>Tomas Vargas 2025</p>
-    </footer>
-</body>
+  <!--  HEADER  (solo el título) -->
+  <header class="site-header">
+    <h1>Falling Sand</h1>
+  </header>
 
+  <!--  CONTENIDO PRINCIPAL  -->
+  <main class="layout">
+    <!-- Canvas primero en DOM para que lector de pantalla llegue antes al “juego” -->
+    <canvas id="canvas" aria-label="Área de simulación"></canvas>
+
+    <!-- Panel de controles -->
+    <aside class="controls">
+      <fieldset>
+        <legend>Pincel</legend>
+        <div class="field-wrapper">
+          <button aria-label="Disminuir tamaño de pincel" data-type="minus" data-input="brush">−</button>
+          <input type="number" id="brush" name="brush" min="1" max="4" value="1" />
+          <button aria-label="Aumentar tamaño de pincel" data-type="add" data-input="brush">+</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Color</legend>
+        <input type="color" id="color" name="color" />
+      </fieldset>
+
+      <fieldset>
+        <legend>Gravedad</legend>
+        <div class="field-wrapper">
+          <button aria-label="Disminuir gravedad" data-type="minus" data-input="gravity">−</button>
+          <input type="number" id="gravity" name="gravity" min="-2" max="2" step=".25" value="1" />
+          <button aria-label="Aumentar gravedad" data-type="add" data-input="gravity">+</button>
+        </div>
+      </fieldset>
+    </aside>
+  </main>
+
+  <!--  FOOTER  -->
+  <footer class="site-footer">
+    <small>Tomas Vargas 2025</small>
+  </footer>
+</body>
 </html>
