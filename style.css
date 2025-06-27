@@ -80,6 +80,7 @@ canvas {
     border: .2rem solid #fff;
     border-radius: .75rem;
     display: block;
+    touch-action: none;
 }
 
 /*──────────────────────── CONTROLES (DOCK MÓVIL) ──────────────────*/

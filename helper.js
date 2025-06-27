@@ -1,53 +1,17 @@
-import { CELL } from "./index.js";
-import { COLS, ctx, ROWS } from "./index.js";
+import { drawCells, setXY, drawGrid, getXY, withinCanvas } from "./canvas.js";
+import { onPointerDown, onPointerMove } from "./handlers.js";
+import { adjustNumeric } from "./utils.js";
 
-export const withinCols = (c) => c >= 0 && c < COLS
+export function getNewState(canvasState, gravity) {
+    if (gravity === 0) return [...canvasState]
 
-export function randomColor() {
-    let red = Math.floor(Math.random() * 256);
-    let green = Math.floor(Math.random() * 256);
-    let blue = Math.floor(Math.random() * 256);
-
-    return 'rgb(' + red + ',' + green + ',' + blue + ')';
-}
-
-export function drawLine(x1, y1, x2, y2) {
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-}
-
-
-export function drawGrid(cols, rows) {
-    for (let r = 0; r < rows; r++) drawLine(0, r * CELL, canvas.width, r * CELL);
-    for (let c = 0; c < cols; c++) drawLine(c * CELL, 0, c * CELL, canvas.height);
-}
-
-export function drawCells(state) {
-    for (let r = 0; r < state.length; r++) {
-        for (let c = 0; c < state[r].length; c++) {
-            const actual = state[r][c]
-            if (actual !== 0) {
-                const x = c * CELL;
-                const y = r * CELL;
-                ctx.fillStyle = actual
-                ctx.fillRect(x, y, CELL, CELL);
-            }
-        }
-    }
-}
-
-export function getNewState(state, gravity) {
-    if (gravity === 0) return  [...state ]
-
-    const newState = Array.from({ length: state.length }, () => Array(state[0].length).fill(0));
+    const newState = Array.from({ length: canvasState.length }, () => Array(canvasState[0].length).fill(0));
 
     const gravityDirection = (gravity / Math.abs(gravity))
 
-    for (let r = 0; r < state.length; r++) {
-        for (let c = 0; c < state[r].length; c++) {
-            const actual = state[r][c]
+    for (let r = 0; r < canvasState.length; r++) {
+        for (let c = 0; c < canvasState[r].length; c++) {
+            const actual = canvasState[r][c]
 
             if (actual === 0) continue
 
@@ -59,7 +23,7 @@ export function getNewState(state, gravity) {
 
             const next = r + (1 * gravityDirection)
 
-            const below = state[next][c]
+            const below = canvasState[next][c]
 
             let direction = 1
             if (Math.random() < 0.5) {
@@ -70,10 +34,10 @@ export function getNewState(state, gravity) {
             let belowB = -1;
 
             if (withinCols(c + direction)) {
-                belowA = state[next][c + direction]
+                belowA = canvasState[next][c + direction]
             }
             if (withinCols(c - direction)) {
-                belowB = state[next][c - direction]
+                belowB = canvasState[next][c - direction]
             }
 
             if (below === 0) {
@@ -90,3 +54,16 @@ export function getNewState(state, gravity) {
 
     return newState
 }
+
+//Canvas
+export const setWithinCanvas = (canvas) => (x, y) => withinCanvas(canvas, x, y);
+export const setGetXY = (canvas) => (e) => getXY(canvas, e);
+
+export const setDrawCells = (ctx, cell) => (canvasState) => { drawCells(ctx, cell, canvasState) }
+export const setSetXY = (canvasState, cell) => (x, y) => setXY(canvasState, cell, x, y)
+export const setDrawGrid = (drawLine, cell) => (cols, rows) => drawGrid(drawLine, cell, cols, rows)
+export const setDrawLine = (ctx) => (x1, y1, x2, y2) => drawLine(ctx, x1, y1, x2, y2)
+
+//handler
+export const setPointerMove = (getXY, setXY, withinCanvas) => (e, optionsState) => onPointerMove(withinCanvas, getXY, setXY, e, optionsState)
+export const setPointerDown = (canvas, withinCanvas, getXY, setXY,) => (e) => onPointerDown(canvas, withinCanvas, getXY, setXY, e)
