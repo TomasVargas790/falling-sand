@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Falling Sand</title>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 20px; 
+            font-family: Arial, sans-serif; 
+        }
+        #canvas { 
+            border: 1px solid #ccc; 
+            display: block; 
+            margin: 20px auto; 
+        }
+        .controls {
+            text-align: center;
+            margin: 20px;
+        }
+        .controls input, .controls button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Falling Sand Test</h1>
+    
+    <canvas id="canvas" width="400" height="300"></canvas>
+    
+    <div class="controls">
+        <label>Color: <input type="color" id="color" value="#ff0000"></label>
+        <label>Brush: <input type="number" id="brush" min="1" max="4" value="1"></label>
+        <label>Gravity: <input type="number" id="gravity" min="-2" max="2" step="0.25" value="1"></label>
+        
+        <button data-type="minus" data-input="brush">Brush -</button>
+        <button data-type="add" data-input="brush">Brush +</button>
+        <button data-type="minus" data-input="gravity">Gravity -</button>
+        <button data-type="add" data-input="gravity">Gravity +</button>
+    </div>
+    
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>
